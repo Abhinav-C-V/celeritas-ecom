@@ -1,0 +1,279 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- Content -->
+        <div class="content">
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!-- Widgets  -->
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        {% comment %} <canvas id="pieChart" width="400" height="200"></canvas> {% endcomment %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="stat-widget-five">
+                                    <div class="stat-icon dib flat-color-1">
+                                        <i class="pe-7s-cash"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="text-left dib">
+                                            <div class="stat-text">₹<span class="count">{{revenue}}</span></div>
+                                            <div class="stat-heading">Last Month Revenue</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="stat-widget-five">
+                                    <div class="stat-icon dib flat-color-2">
+                                        <i class="pe-7s-cart"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="text-left dib">
+                                            <div class="stat-text"><span class="count">{{orders}}</span></div>
+                                            <div class="stat-heading">Last Month Sales</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="stat-widget-five">
+                                    <div class="stat-icon dib flat-color-3">
+                                        <i class="pe-7s-browser"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="text-left dib">
+                                            <div class="stat-text"><span class="count">{{incomplete_orders}}</span></div>
+                                            <div class="stat-heading">Last Month Incomplete Orders</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="stat-widget-five">
+                                    <div class="stat-icon dib flat-color-4">
+                                        <i class="pe-7s-users"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="text-left dib">
+                                            <div class="stat-text"><span class="count">{{users}}</span></div>
+                                            <div class="stat-heading">Total Clients</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Widgets -->
+                <div class="messages-container">
+                    {% if messages %}
+                      <div class="messages">
+                        {% for message in messages %}
+                          <div class="alert alert-warning">{{ message }}</div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                </div>
+                <!--  Traffic  -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                            <a class="navbar-brand" href="#">Sales Report</a>
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class="navbar-toggler-icon"></span>
+                                            </button>
+                                            <div class="collapse navbar-collapse" id="navbarNav">
+                                                <ul class="navbar-nav ml-auto">
+                                                    <li class="nav-item">
+                                                        <form method="POST" action="{% url 'sales_report'%}">
+                                                            {% csrf_token %}
+                                                            <div class="form-row align-items-center">
+                                                                <div class="col-auto">
+                                                                    <label class="sr-only" for="start_date">Start Date:</label>
+                                                                    <input type="date" class="form-control mb-2" id="start_date" name="start_date">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <label class="sr-only" for="end_date">End Date:</label>
+                                                                    <input type="date" class="form-control mb-2" id="end_date" name="end_date">
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <select class="form-control mb-2" name="generate">
+                                                                        <option value="PDF">PDF</option>
+                                                                        <option value="EXCEL">EXCEL</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <button type="submit" formtarget="_blank" class="btn btn-outline-dark mb-2">
+                                                                        <i class="fas fa-file-export"></i> Download Report
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card bg-flat-color-3">
+                                            <!-- Chart content here -->
+                                        </div><!-- /.card -->
+                                    </div>
+                                    <!-- Other chart divs here -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                        <!-- <canvas id="TrafficChart"></canvas>   -->
+                                    {% comment %} <div id="traffic-chart" class="traffic-chart"></div> {% endcomment %}
+                                    <div class="orders ">
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <canvas id="ordersChart" width="400" height="200"></canvas>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <canvas id="revenueChart" width="400" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% comment %} </div> {% endcomment %}
+                            
+
+                                <div class="col-lg-4">
+                                    <div class="card-body">
+                                        
+                                    </div> <!-- /.card-body -->
+                                </div> 
+                            {% comment %} <div class="col-xl-12"> {% endcomment %}
+                                <div class="row col-md-12 text-center">
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="calender-cont">
+                                                    <!-- Chart 1: Pie Chart -->
+                                                    <canvas id="pieChart" width="400" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="calender-cont widget-calender">
+                                                    <!-- Chart 2: Calendar Chart -->
+                                                    <div id="calendar"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Add more charts or content here if needed -->
+                                </div>
+                                
+                                {% comment %} </div> <!-- /.col-md-4 --> {% endcomment %}
+
+                            </div> <!-- /.row -->
+                            
+                            <div class="card-body"></div>
+                        </div>
+                        
+                    </div><!-- /# column -->
+                    
+                    
+                    
+                </div>
+                <!--  /Traffic -->
+                
+                
+                <!-- Modal - Calendar - Add New Event -->
+                <div class="modal fade none-border" id="event-modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title"><strong>Add New Event</strong></h4>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event</button>
+                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /#event-modal -->
+                <!-- Modal - Calendar - Add Category -->
+                <div class="modal fade none-border" id="add-category">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title"><strong>Add a category </strong></h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label">Category Name</label>
+                                            <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label">Mark It As</label>
+                                            <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
+                                                <option value="sCompleted">Completed</option>
+                                                <option value="Incompleted">Incompleted</option>
+                                                <option value="Info">Info</option>
+                                                <option value="Recheck">Recheck</option>
+                                                <option value="Important">Important</option>
+                                                <option value="Warning">Warning</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- /#add-category -->
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->
+        <div class="clearfix"></div>
+
+{% endblock %}
+</body>
+</html>
