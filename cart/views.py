@@ -132,7 +132,6 @@ def add_to_cart(request):
         except Variation.DoesNotExist:
             messages.warning(request, 'Variant not available')
             return redirect('product_detail', id=prod_id)
-        print(variant.stock)
         return redirect('cart')
     else:
         messages.warning(request, 'Please login first')
@@ -207,18 +206,11 @@ def increment_cart_item(request):
     if 'user_email' in request.session:
         cart_id = request.GET.get('cart_id')
         cart_item = CartItem.objects.get(id=cart_id)
-        # stock = cart_item.product.stock
         if cart_item.product.stock != 0:
             if cart_item.quantity > 0 :
-                print(cart_item.quantity)
-                print(cart_item.product.stock)         
                 if cart_item.product.stock > cart_item.quantity:
                     cart_item.quantity += 1
-                    # cart_item.product.stock -= 1
-                    # cart_item.product.save()
                     cart_item.save()
-                    print(cart_item.product.stock)
-                    print(cart_item.quantity)         
                     return redirect('cart')
                 else:
                     messages.warning(request, 'Product Out Of Stock')
@@ -239,17 +231,9 @@ def decrement_cart_item(request):
         cart_item = CartItem.objects.get(id=cart_id)
         if cart_item.quantity > 1 :
             cart_item.quantity -= 1
-            # cart_item.product.stock += 1
-            # cart_item.product.save()
             cart_item.save()
-            print(cart_item.product.stock)
-            print(cart_item.quantity)
             return redirect('cart')
         else:
-            # cart_item.product.stock += 1
-            # cart_item.product.save()
-            print(cart_item.product.stock)
-            print(cart_item.quantity)
             CartItem.objects.filter(id=cart_id).delete()
             return redirect('cart')
     else:
@@ -344,12 +328,9 @@ def select_address(request):
         user =UserDetail.objects.get(user_email=request.session['user_email'])
         ad_id = request.GET.get('ad_id')
         address = Address.objects.filter(user=user).all()
-        print(address)
         for adrs in address:
             if adrs.selected is True:
-                print(adrs)
                 Address.objects.filter(id=adrs.id).update(selected=False)
-                print(adrs)
             # print(adrs)
         Address.objects.filter(id=ad_id,user=user).update(selected=True)
         return redirect('proceed_to_checkout')
@@ -384,8 +365,6 @@ def cash_on_delivery(request):
                     if c.product.stock >= c.quantity:
                         ord = Order(user=user, address=user_1, product=c.product, amount=c.subtotal-(discount)/cartcount, quantity=c.quantity )
                         ord.save()
-                        print(c.product.stock)
-                        print(c.quantity)
                         c.product.stock -= c.quantity
                         c.product.save()
                         htmlgen =  f'<p>Your Celeritas Order of Order ID <strong>ORDID{ord.id}</strong> placed successfully.</p>Price: ₹ {c.subtotal-(discount)/cartcount}<p>Quantity: {c.quantity} No.s</p>'
@@ -444,7 +423,7 @@ def r_razorpay(request):
         razorpay_response=client.order.create(data=DATA)
         reazorpay_status=razorpay_response['status']
         
-        print(reazorpay_status)
+        # print(reazorpay_status)
         if reazorpay_status == 'created':
             
             for c in cart:
@@ -459,11 +438,16 @@ def r_razorpay(request):
                 else:
                     # messages.warning(request, 'Product out of stock')
                     return redirect('proceed_to_checkout')
-                print(Order.objects.filter(user=user))
-                print("order placed razorpay")
-                
+            cat=Category.objects.all()
+            context = {
+                'cat':cat,
+                'user_firstname': user.user_firstname,
+                'user_image': user.user_image,
+                'user':user,
+                'cart': cart,
+                }
             UserCoupon.objects.filter(user__user_email=user_email,coupon__is_active=True,applied=True).delete()
-            return render(request,'store/confirm_order.html')
+            return render(request,'store/confirm_order.html',context)
             
         else:
             messages.warning(request,'Something went wrong')

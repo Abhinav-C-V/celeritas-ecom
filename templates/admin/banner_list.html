@@ -96,7 +96,7 @@
                         </table>
 
                         <!-- Display pagination links -->
-                        <div class="pagination">
+                        {% comment %} <div class="pagination">
                             <ul class="pagination justify-content-center">
                                 {% if page_obj.has_previous %}
                                     <li class="page-item">
@@ -122,7 +122,7 @@
                                     </li>
                                 {% endif %}
                             </ul>
-                        </div>
+                        </div> {% endcomment %}
 
 
 

@@ -70,30 +70,3 @@
 
 {% endblock %}
 
-{% comment %} <script>
-  $(document).ready(function() {
-    $('#userSignupForm').on('submit', function(event) {
-      event.preventDefault();
-      var formData = new FormData(this);
-
-      $.ajax({
-        url: $(this).attr('action'),
-        type: $(this).attr('method'),
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-          console.log('Success:', response);
-          // Handle success response
-        },
-        error: function(xhr, textStatus, error) {
-          console.log('Error:', error);
-          // Handle error response
-        }
-      });
-    });
-  });
-</script>
-
-
-	 {% endcomment %}

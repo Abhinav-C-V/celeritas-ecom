@@ -10,7 +10,7 @@
       <header class="mb-4">
         <h4 class="card-title">Update Order</h4>
       </header>
-      <form id="update_order" action="{% url 'admin_updateorder' id=ord.id %}" method="POST" enctype="multipart/form-data">
+      <form id="update_order" action="{% url 'admin_updateorder' %}?ord_id={{ order.id }}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
 

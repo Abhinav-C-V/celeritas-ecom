@@ -112,11 +112,11 @@ def admin_userdetails(request):
             user=UserDetail.objects.filter(user_firstname__icontains=search)
         else:
             user=UserDetail.objects.all().order_by('id')
-            print(user)
-        paginator = Paginator(user, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/user_details.html',{'page_obj': page_obj})
+            # print(user)
+        # paginator = Paginator(user, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/user_details.html',{'page_obj': user})
     else:
         return render(request, 'admin/login.html')
 
@@ -153,10 +153,10 @@ def admin_bannerlist(request):
             banner=Banner.objects.filter(name__icontains=search)
         else:
             banner=Banner.objects.all().order_by('id')
-        paginator = Paginator(banner, 5)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/banner_list.html',{'page_obj': page_obj})
+        # paginator = Paginator(banner, 5)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/banner_list.html',{'page_obj': banner})
     else:
         return redirect('admin_login')
         
@@ -222,10 +222,10 @@ def admin_couponlist(request):
             coupon=Coupon.objects.filter(coupon_code__icontains=search)
         else:
             coupon=Coupon.objects.all().order_by('-id')
-        paginator = Paginator(coupon, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/coupon_list.html',{'page_obj': page_obj})
+        # paginator = Paginator(coupon, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/coupon_list.html',{'page_obj': coupon})
     else:
         return redirect('admin_login') 
 
@@ -291,10 +291,10 @@ def admin_user_couponlist(request):
         else:
             uid=request.GET['uid']
             coupon=UserCoupon.objects.filter(user=uid).order_by('id')
-        paginator = Paginator(coupon, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/user_couponlist.html',{'page_obj': page_obj,})
+        # paginator = Paginator(coupon, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/user_couponlist.html',{'page_obj': coupon,})
     else:
         return redirect('admin_login') 
 
@@ -306,7 +306,7 @@ def add_user_coupon(request):
             if form.is_valid():
                 coupon = form.cleaned_data['coupon']
                 user = form.cleaned_data['user']
-                print(coupon)
+                # print(coupon)
                 dup = UserCoupon.objects.filter(coupon=coupon,user=user).first()
                 if dup:
                     messages.warning(request,'User Coupon already exists')
@@ -340,10 +340,10 @@ def admin_userwallet_trans(request, id):
             messages.warning(request, 'Wallet not found')
             return redirect('admin_user_wallet')
 
-        paginator = Paginator(transaction_history, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'admin/user_wallet_trans_hist.html', {'page_obj': page_obj,})
+        # paginator = Paginator(transaction_history, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request, 'admin/user_wallet_trans_hist.html', {'page_obj': transaction_history,})
     else:
         return render(request, 'admin/login.html')
 
@@ -380,11 +380,11 @@ def admin_user_wallet(request):
             wallet=Wallet.objects.filter(Q(user__user_firstname__icontains=search)|Q(id__icontains=search)).order_by('-id')
         else:
             wallet=Wallet.objects.all().order_by('id')
-        print(wallet)
-        paginator = Paginator(wallet, 15)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/user_wallet.html', {'page_obj': page_obj})
+        # print(wallet)
+        # paginator = Paginator(wallet, 15)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/user_wallet.html', {'page_obj': wallet})
     else:
         return redirect('admin_login')
 
@@ -397,56 +397,58 @@ def admin_orderlist(request):
             order=Order.objects.filter(Q(user__user_firstname__icontains=search)|Q(id__icontains=search)).order_by('-id')
         else:
             order = Order.objects.all().order_by('-id')
-        paginator = Paginator(order, 15)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/order_list.html', {'page_obj': page_obj})
+        # paginator = Paginator(order, 15)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/order_list.html', {'page_obj': order})
     else:
         return redirect('admin_login')
     
 
 class OrderUpdateView(View):
-    @method_decorator
-    def get(self, request, id):
+    def get(self, request):
         if 'username' in request.session:
             try:
-                ord = Order.objects.get(id=id)
+                ord_id = request.GET['ord_id']
+                ord = Order.objects.get(id=ord_id)
                 form = OrderForm(instance=ord)
             except Order.DoesNotExist:
-                messages.warning(request,'Selected order does not exist')
+                messages.warning(request, 'Selected order does not exist')
                 return redirect('admin_orderlist')
                 
-            return render(request, 'admin/update_orders.html', {'form': form,'ord':ord})
+            return render(request, 'admin/update_orders.html', {'form': form, 'ord': ord})
         else:
             return redirect('admin_login')
 
-    @method_decorator
-    def post(self, request, id):
+    # @method_decorator
+    def post(self, request):
         if 'username' in request.session:
-            ord = Order.objects.get(id=id)
-            form = OrderForm(request.POST, request.FILES, instance=ord)
-            if form.is_valid():
-                status = form.cleaned_data['status']
-                if status == 'Returned' or status == 'Cancelled':
-                    try:
+            try:
+                ord_id = request.GET['ord_id']
+                ord = Order.objects.get(id=ord_id)
+                form = OrderForm(request.POST, request.FILES, instance=ord)
+                if form.is_valid():
+                    status = form.cleaned_data['status']
+                    if status in ['Returned', 'Cancelled']:
                         wallet = Wallet.objects.get(user=ord.user)
                         if wallet.is_active:
-                            wallet.deposit(ord.amount,currency='INR',type='Refund')
-                            Transaction.objects.filter(wallet = wallet).update(type='Refund')
+                            wallet.deposit(ord.amount, currency='INR', type='Refund')
+                            Transaction.objects.filter(wallet=wallet).update(type='Refund')
                             form.save()
-                            messages.success(request,'Order updated successfully')
-                            return redirect('admin_orderlist')
-                        messages.warning(request, 'User Wallet is not activated')
-                        return redirect('admin_updateorder',id=id)
-                    except Wallet.DoesNotExist:
-                        messages.warning(request, 'No Wallet for user.')
-                        return redirect('admin_updateorder',id=id)
+                            messages.success(request, 'Order updated successfully')
+                        else:
+                            messages.warning(request, 'User Wallet is not activated')
+                    else:
+                        form.save()
+                        messages.success(request, 'Order updated successfully')
                 else:
-                    form.save()
-                    messages.success(request,'Order updated successfully')
-                    return redirect('admin_orderlist')
-            else:
-                return render(request, 'admin/update_orders.html', {'form': form,'ord':ord})
+                    messages.error(request, 'Form validation failed. Please check the input data.')
+            except Order.DoesNotExist:
+                messages.warning(request, 'Selected order does not exist')
+            except Wallet.DoesNotExist:
+                messages.warning(request, 'No Wallet for user.')
+            
+            return redirect('admin_orderlist')
         else:
             return redirect('admin_login')
 

@@ -30,10 +30,10 @@ def adminproductlist(request):
             elif sort_by_price == 'desc':
                 prod = prod.order_by(F('normal_price').desc())
 
-        paginator = Paginator(prod, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'admin/product_details.html', {'page_obj': page_obj})
+        # paginator = Paginator(prod, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request, 'admin/product_details.html', {'page_obj': prod})
     else:
         return render(request, 'admin/login.html')
     
@@ -64,10 +64,10 @@ def adminproductgallery(request):
         else:
             prod=ProductGallery.objects.all().order_by('id')
             
-        paginator = Paginator(prod, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/product_gallery.html',{'page_obj': page_obj,})
+        # paginator = Paginator(prod, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/product_gallery.html',{'page_obj': prod,})
     else:
         return render(request, 'admin/login.html')
 
@@ -188,11 +188,11 @@ def admin_product_variations(request):
             prod = Variation.objects.filter(product__product_name__icontains=search)
         else:
             prod = Variation.objects.all().order_by('id')
-            paginator = Paginator(prod, 10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
+            # paginator = Paginator(prod, 10)
+            # page_number = request.GET.get('page')
+            # page_obj = paginator.get_page(page_number)
             
-        return render(request, 'admin/product_variations.html',{'page_obj': page_obj})
+        return render(request, 'admin/product_variations.html',{'page_obj': prod})
     else:
         return redirect('admin_login')
 
@@ -235,11 +235,10 @@ def admin_colorlist(request):
                
         else:
             color=Color.objects.all().order_by('id')
-        print(color)
-        paginator = Paginator(color, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/color_list.html',{'page_obj': page_obj,})
+        # paginator = Paginator(color, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/color_list.html',{'page_obj': color,})
     else:
         return render(request, 'admin_login')
     
@@ -310,11 +309,10 @@ def admin_sizelist(request):
                
         else:
             size=Size.objects.all().order_by('id')
-        print(size)
-        paginator = Paginator(size, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request,'admin/size_list.html',{'page_obj': page_obj,})
+        # paginator = Paginator(size, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
+        return render(request,'admin/size_list.html',{'page_obj': size,})
     else:
         return render(request, 'admin_login')
     

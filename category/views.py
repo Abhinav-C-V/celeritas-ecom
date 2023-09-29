@@ -26,7 +26,7 @@ class AdminAddCategoryView(View):
         if 'username' in request.session:
             form = CategoryForm(request.POST, request.FILES)
             if form.is_valid():
-                print("form is valid")
+                # print("form is valid")
                 name = form.cleaned_data['category_name']
                 discount = form.cleaned_data['discount']
                 offer_active = form.cleaned_data['offer_active']
@@ -42,7 +42,7 @@ class AdminAddCategoryView(View):
                     form.save()
                     return redirect('admin_categorylist')
             else:
-                print("form is not valid")
+                # print("form is not valid")
                 return redirect('admin_addcategory')
         else:
             return redirect('admin_login')

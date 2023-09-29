@@ -76,12 +76,12 @@
 	
 				<article class="filter-group">
 					<header class="card-header">
-						<a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="collapse-toggle">
+						<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="collapse-toggle">
 							<i class="icon-control fa fa-chevron-down"></i>
 							<h6 class="title">Sizes</h6>
 						</a>
 					</header>
-					<div class="filter-content collapse" id="collapse_2">
+					<div class="filter-content collapse" id="collapse_3">
 						<div class="form-group text-right col-md-6">
 							{% comment %} <label>Categories</label> {% endcomment %}
 							<select class="mr-2 form-control" name="size_id">
@@ -98,12 +98,12 @@
 	
 				<article class="filter-group">
 					<header class="card-header">
-						<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="collapse-toggle">
+						<a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="collapse-toggle">
 							<i class="icon-control fa fa-chevron-down"></i>
 							<h6 class="title">Price range</h6>
 						</a>
 					</header>
-					<div class="filter-content collapse" id="collapse_3">
+					<div class="filter-content collapse" id="collapse_4">
 						<div class="card-body">
 							<div class="form-row">
 								<div class="form-group col-md-6">
@@ -163,17 +163,6 @@
 						<div class="fix-height"style="height: 50%; overflow: auto;">
 							<a href="{% url 'product_detail' id=product.product.id %}" class="title">{{product.product.product_name}}</a>
 							<small>( {{product.product.category}}<br>Colour: {{product.color}}, Size: {{product.size}} )</small>
-							{% comment %} <div class="rating-wrap">
-								<ul class="rating-stars">
-									<li style="width:70%" class="stars-active"> 
-										<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-									</li>
-									<li>
-										<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
-									</li>
-								</ul> {% endcomment %}
-								{% comment %} <span class="label-rating text-muted">34 reviews</span> {% endcomment %}
-							{% comment %} </div> {% endcomment %}
 							<div class="price mt-1">
 								{% if product.product.category.offer_active %}
 									<p class="font-weight-bold">Price: <s>₹ {{product.product.normal_price}}</s></p>

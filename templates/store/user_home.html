@@ -60,22 +60,6 @@
 				<a href="{{ i.get_url }}" class="title">{{i.product.product_name}}</a>
 				<small>( {{i.product.category}}<br>Colour: {{i.color}}, Size: {{i.size}} )</small>
 
-				{% comment %} <div class="fix-height"style="height: 50%; overflow: auto;">
-					<a href="{% url 'product_detail' id=product.id %}" class="title">{{product.product.product_name}}</a>
-					<small>( {{i.product.category}}<br>Colour: {{i.color}}, Size: {{i.size}} )</small> {% endcomment %}
-
-				{% comment %} <div class="rating-wrap">
-					<ul class="rating-stars">
-						<li style="width:80%" class="stars-active"> 
-							<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-						</li>
-						<li>
-							<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> 
-						</li>
-					</ul>
-					<span class="label-rating text-muted"> 34 reviws</span>
-				</div> {% endcomment %}
-
 				<div class="price mt-1">
 					{% if i.product.category.offer_active %}
                     <p class="font-weight-bold">Price: <s>₹ {{i.product.normal_price}}</s></p>
@@ -236,40 +220,6 @@
 	
 </div> <!-- row.// -->
 <!-- ... -->
-{% comment %} <div class="row" data-aos="fade-up">
-    <div class="col-md-12 text-center">
-        <div class="site-block-27">
-            <ul class="pagination">
-
-    {% if page_obj.has_other_pages %}
-	  	<ul class="pagination">
-		{% if page_obj.has_previous %}
-	    	<li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
-		{% else %}
-			<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-		{% endif %}
-
-		{% for i in page_obj.paginator.page_range %}
-			{% if page_obj.number == i %}
-				<li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
-			{% else %}
-				<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-			{% endif %}
-	    {% endfor %}
-
-		{% if page_obj.has_next %}
-	    	<li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
-		{% else %}
-			<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-		{% endif %}
-	  </ul>
-	{% endif %}
-
-            </ul>
-        </div>
-    </div>
-</div>
-<!-- ... --> {% endcomment %}
 
 
 
@@ -347,7 +297,7 @@
 	<h3 class="mb-3">Download app here</h3>
 	
 	<a href="#"><img src="{% static 'images/misc/appstore.png' %}" height="40"></a>
-	<a href="#"><img src="{% static 'images/misc/appstore.png' %}" height="40"></a>
+	<a href="#"><img src="{% static 'images/misc/playmarket.png' %}" height="40"></a>
 	
 	</div><!-- container // -->
 	</section>

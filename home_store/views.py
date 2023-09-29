@@ -58,7 +58,6 @@ def index(request):
     if 'user_email' in request.session:
         return redirect('user_home')
     else:
-        # print(make_password('1234'))
         cat=Category.objects.all()
         cat_id = request.GET.get('cat_id')
         prod = request.GET.get('prod_id')
@@ -108,7 +107,6 @@ class UserLoginView(View):
         password = request.POST.get('user_password')
         user = UserDetail.objects.filter(user_email=user_email).first()
         if user and user.user_is_active is True and user.u_otp is None:
-            # print(check_password(password, user.user_password))
             if check_password(password, user.user_password):  # Compare hashed passwords
             # if password == user.user_password:
                 request.session['user_email'] = user_email
@@ -310,7 +308,7 @@ def userstore_filter(request):
 
             details3 = details3.order_by('id')
             
-        paginator = Paginator(details3, 9)
+        paginator = Paginator(details3, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
@@ -340,13 +338,6 @@ def product_detail(request, id):
     # if 'user_email' in request.session:
     try:
         single_product = get_object_or_404(Product, id=id)
-        
-        print(single_product.product_discount)
-        print(single_product.price)
-        print(single_product.category.offer_active)
-        print(single_product.offer_active)
-        
-        
         
         reviews = ReviewRating.objects.filter(product=single_product)
         cat=Category.objects.all()
@@ -416,7 +407,6 @@ def user_dashboard(request):
             'user_image': user_detail.user_image,
             'user_firstname': user_detail.user_firstname,
             }
-        # print(user_detail.id)
         return render(request, 'accounts/user_dashboard.html',context)
     else:
         return redirect('user_login')
@@ -426,7 +416,6 @@ def user_dashboard(request):
 def user_profile_info(request):
     if 'user_email' in request.session:
         user_email = request.session['user_email']
-        # print(user_email)
         cat=Category.objects.all()
         user = UserDetail.objects.get(user_email=user_email)
         adrs = Address.objects.filter(user=user).all()
@@ -572,8 +561,6 @@ def user_manage_address(request):
             'user_image':user_detail.user_image,
             'user_firstname': user_detail.user_firstname,
             'adrs':adrs,}
-        for i in adrs:
-            print(i)
         return render(request, 'accounts/user_mange_address.html', context)
     else:
         return redirect('user_login')
@@ -679,17 +666,11 @@ def forgot_password(request):
             try:
                 email = request.POST.get('email')
                 user = UserDetail.objects.get(user_email=email)
-                # print(user.user_firstname)
             except:
                 messages.warning(request,'No user is registered with this email address')
                 return redirect('forgot_password')
             """send otp code for mail"""
             o=str(user.user_firstname)+generateOTP()
-            # print(o)
-            # user.user_password = make_password(o)
-            # user.save()
-            # print(o)
-            # print(user.user_password)
             if user:
                 htmlgen =  f'<p>Your new password for login Celeritas account is <strong>{o}</strong></p>.Its just a recovery password please change the password after login.'
                 email_sent = send_mail('OTP request',o,'celeritasmain2@gmail.com',[user.user_email], fail_silently=False, html_message=htmlgen)
@@ -729,15 +710,11 @@ def forgot_pass_logout_user(request):
         try:
             email = request.POST.get('email')
             user = UserDetail.objects.get(user_email=email)
-            print(user.user_firstname)
         except:
             messages.warning(request,'No user is registered with this email address')
             return redirect('forgot_pass_out_user')
         
         o=str(user.user_firstname)+generateOTP()
-        # print(o)
-        # user.user_password = make_password(o)
-        # user.save()
         
         """send otp code for mail"""
         if user:
@@ -754,9 +731,6 @@ def forgot_pass_logout_user(request):
                 # Email sending failed
                 messages.warning(request, 'Email sending failed. Not a proper email Please try again.')
                 return redirect('forgot_pass_out_user')
-            # # del request.session['user_email']
-            # messages.success(request,'Please check your email for new password')
-            # return redirect('user_login')
         else:
             messages.warning(request,'No user is registered with this email address')
             return redirect('forgot_pass_out_user')
@@ -860,7 +834,7 @@ def coupons(request):
         user_email = request.session['user_email']
         user = UserDetail.objects.get(user_email = user_email)
         cat = Category.objects.all()
-        coupons = UserCoupon.objects.filter(user=user)
+        coupons = UserCoupon.objects.filter(user=user).order_by('id')
         paginator = Paginator(coupons, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -903,7 +877,6 @@ def apply_coupon(request):
             
             if coup_code == coupon.coupon_code and coupon.is_active:
                 if grand_total >= coupon.minimum_amount:
-                    print(coupon.is_active)
                     UserCoupon.objects.filter(user__user_email=user_email).update(applied=False)
                     user_coupon = UserCoupon.objects.filter(user__user_email=user_email, coupon__is_active=True, coupon=coupon)
                     user_coupon.update(applied=True)
@@ -998,13 +971,10 @@ def otp_login(request):
         try:
             phone = int(request.POST.get('phone'))
             user = UserDetail.objects.get(user_phone=phone)
-            print(user)
         except:
             messages.warning(request,'No user is registered with this mobile number')
             return redirect('otp_login')
-        print(phone)
         o=str(user.user_firstname)+generateOTP()
-        print(o)
         request.session['otp'] = o
         request.session['random _data'] = phone
         print('otp is ',o)
@@ -1038,10 +1008,8 @@ def otp_verification(request):
         otp = request.POST.get('otp')
         if otp == request.session["otp"]:
             user_phone=request.session.get('random _data')
-            print(user_phone)
             try:
                 user = UserDetail.objects.get(user_phone=user_phone)
-                print(user)
             except:
                 messages.warning(request,'No user is registered with this mobile number')
                 return redirect('otp_login')
@@ -1099,10 +1067,10 @@ def my_wallet(request):
         wallet = Wallet.objects.filter(user=user)
         if wallet.exists():
             wallet = wallet.first()
-            if wallet.is_active:
-                print(wallet.is_active)
-            else:
-                print('not activated')
+            # if wallet.is_active:
+            #     print(wallet.is_active)
+            # else:
+            #     print('not activated')
             cat = Category.objects.all()
             context = {
                 'cat':cat,
@@ -1114,7 +1082,6 @@ def my_wallet(request):
             return render(request, 'accounts/my_wallet.html',context)
         else:
             Wallet.objects.create(user=user)
-            print("Wallet not exists")
             return redirect('my_wallet')
         
     else:

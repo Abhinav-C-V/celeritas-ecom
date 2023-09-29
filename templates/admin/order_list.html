@@ -107,15 +107,9 @@
                                                     <i class="menu-icon fa fa-glass"></i>Actions
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="{% url 'admin_updateorder' id=order.id %} "><i class="menu-icon fa fa-sign-in"></i>Update</a>
-                                                    {% comment %} <a class="dropdown-item" href="{% url 'admin_deleteproduct' %}?uid={{ prod.id }}"><i class="menu-icon fa fa-trash"></i>Delete</a> {% endcomment %}
-                                                    {% comment %} <a class="dropdown-item" href="{% url 'admin_product_variantlist' %}?prod_id={{ prod.id }}"><i class="menu-icon fa fa-th"></i>Product Variant List</a> {% endcomment %}
+                                                    <a class="dropdown-item" href="{% url 'admin_updateorder' %}?ord_id={{ order.id }}"><i class="menu-icon fa fa-sign-in"></i>Update</a>
                                                 </div>
-                                                
-
                                             </div></td>
-
-
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -123,7 +117,7 @@
                         </table>
 
                         <!-- Display pagination links -->
-                        <div class="pagination">
+                        {% comment %} <div class="pagination">
                             <ul class="pagination justify-content-center">
                                 {% if page_obj.has_previous %}
                                     <li class="page-item">
@@ -149,10 +143,7 @@
                                     </li>
                                 {% endif %}
                             </ul>
-                        </div>
-
-
-
+                        </div> {% endcomment %}
 
                     </div>
                 </div>

@@ -123,8 +123,6 @@
                 {% endif %}
               </div>
               
-              
-              
               <a href="{% url 'cart' %}" class="widget-header" style="margin-right: 10px;">
                 <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
                 <span class="badge badge-pill badge-danger notify">{{ cart_count }}</span>
@@ -158,20 +156,12 @@
                 <li></i><a href="{% url 'user_manage_address' %}" class="list-group-item" >  Manage Addresses</a></li>
             </ul>
           </li>
-          {% comment %} <li class="list-group-item menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-wallet"></i> PAYMENTS</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><a href="" class="list-group-item" >  Saved UPI</a></li>
-                <li></i><a href="" class="list-group-item" >  Saved Cards</a></li>
-            </ul>
-          </li> {% endcomment %}
           <li class="list-group-item menu-item-has-children dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-briefcase"></i> MY STUFF</a>
             <ul class="sub-menu children dropdown-menu">
                 <li><a href="{% url 'coupons' %}" class="list-group-item" >  My Coupons</a></li>
-                <li></i><a href="{% url 'wishlist' %}" class="list-group-item" >  My Wishlist</a></li>
+                <li><a href="{% url 'wishlist' %}" class="list-group-item" >  My Wishlist</a></li>
                 <li><a href="{% url 'my_wallet' %}" class="list-group-item" >  My Wallet</a></li>
-
             </ul>
           </li>
         </ul>
